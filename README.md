@@ -11,4 +11,4 @@ To simulate the full systems of PDEs we use the [fipy package](https://www.ctcms
 For different physcial limits we provide two analogous impementations for the initial system as well as the rigid limit.
 
 ### Environment Setup
-For all codes we use a respective conda environment. In order for all files to be executed properly, please install the respective environments through the provided .yaml files.
+For all codes we use a respective conda environment. In order for all files to be executed properly, please install the respective environments through the provided `.yaml` files.
