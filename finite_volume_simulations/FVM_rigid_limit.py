@@ -6,7 +6,7 @@ Created on Wed Dec 20 10:27:31 2023
 This script simulates the model with two species and a rigid limit
 including nonlinear diffusion. The model is solved with the finite volume method fipy.
 
-@author: nilswinkler
+@author: Nils O. Winkler
 """
 
 # Import necessary libraries
