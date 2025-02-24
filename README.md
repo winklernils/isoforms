@@ -7,7 +7,7 @@ The codes placed in this folder are written for the use of the software [Auto-07
 The code provides results for steadily moving cells (c.f. Fig 2) and implements time independent ordinary differential equations only.
 
 ### Fininte Volume Simulations
-To simulate the full systems of PDEs we use the [fipy package](https://www.ctcms.nist.gov/fipy/)) for python.
+To simulate the full systems of PDEs we use the [fipy package](https://www.ctcms.nist.gov/fipy/) for python.
 For different physcial limits we provide two analogous impementations for the initial system as well as the rigid limit.
 
 ### Environment Setup
