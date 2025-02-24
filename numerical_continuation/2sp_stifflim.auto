@@ -35,4 +35,5 @@ for i, bp in enumerate(bvp("BP")):
 bvp=rl(bvp)
 save(bvp,'2spec_stifflim_new')
 plot(bvp)
+# 'clear' command to delete data files. Disable if data is required for plotting
 cl()
