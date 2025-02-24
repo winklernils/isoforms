@@ -1,0 +1,28 @@
+parnames = {1:'L', 2:'Z', 3:'V', 4:'kap', 5:'cinf', 6:'cr', 7:'Kr', 8:'PA', 9:'PB'}
+unames = {1:'s', 2:'x', 3:'cA', 4:'cB'}
+
+! problem constants
+NDIM=   4, NBC= 4, NINT= 2, NPAR = 9,  JAC=0
+
+! #ICP=NBC+NINT−NDIM+1
+ICP =  [4, 3, 1] 
+IPS =   4, IRS =   0, ILP =   1
+ISP =   2, ISW = 1, IPLT= 7
+NPR =  200000, MXBF=  10, IID =   2
+
+! discretization constants
+NTST=  20, NCOL=   4, IAD =   3
+
+! tolerances
+EPSL= 1e-07, EPSU = 1e-07, EPSS = 1e-05
+ITMX= 8, ITNW= 6, NWTN= 3
+
+! continuation step size
+DS  =   1e-9, DSMAX= 0.01, DSMIN=  1e-12, IADS=   1
+THL =  {}, THU =  {}
+
+! Diagram limits
+UZSTOP = {4: [0.0, 0.3], 1:[-0.01, 1.0]},
+UZR={4:[0.001,0.05]}
+NMX=  200000
+

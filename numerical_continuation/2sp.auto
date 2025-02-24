@@ -1,0 +1,44 @@
+#from auto import run, save, load, rl, plot
+
+#================================
+# AUTO determine vdW bif. diag.
+#================================
+
+# eA=0.63
+print("\n***Compute the zero solution branch***")
+bvp=run(e='2sp',c='2sp')
+save(bvp,'ratios_paper_double_check')
+#plot(bvp)
+
+print("\n***Compute bifurcating branches***")
+for i, bp in enumerate(bvp("BP")):
+    if i == 0 or i==2 or i==4:
+      dsmax = 0.01
+      dsmin = 1e-12
+    else:
+      dsmax = 0.01
+      dsmin = 1e-12
+      
+    if i == 4: # plot only  first 4 non-trivial branches
+        break
+        
+    solution = load(bp, DS=0.00001, ISW=-1,DSMIN=dsmin,DSMAX=dsmax,
+                                       UZR={4:[0.001,0.1],
+                                            3:[-20.0, 20.0]},
+                                       UZSTOP={4:[0.0, 0.3], 
+                                               1:[0.0, 1.0],
+                                               },
+				                       NMX=200000,NPR=100000, IAD=3,
+				                       STOP= ['BP2', 'LP2']
+					                   )
+                                       
+    print("\n***Branch " + str(solution["LAB"]) + "***")
+    bvp = bvp + run(solution)
+    bvp = bvp + run(solution,DS='-')
+
+bvp=rl(bvp)
+save(bvp,'ratios_paper_double_check')
+plot(bvp)
+
+# 'clear' command to delete data files. Disable if data is required for plotting
+cl()

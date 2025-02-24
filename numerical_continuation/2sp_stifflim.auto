@@ -1,0 +1,38 @@
+#from auto import run, save, load, rl, plot
+
+#================================
+# AUTO determine vdW bif. diag.
+#================================
+
+# eA=0.63
+print("\n***Compute the zero solution branch***")
+bvp=run(e='2sp_stifflim',c='2sp_stifflim')
+save(bvp,'2spec_stifflim_new')
+#plot(bvp)
+
+print("\n***Compute bifurcating branches***")
+for i, bp in enumerate(bvp("BP")):
+    if i == 0 or i==2 or i==4:
+      dsmax = 0.01
+      dsmin = 1e-12
+    else:
+      dsmax = 0.01
+      dsmin = 1e-12
+      
+    if i==4: break
+        
+    solution = load(bp, DS=0.00001, ISW=-1,DSMIN=dsmin,DSMAX=dsmax,UZR={3:[.35,2.5]},
+                                       UZSTOP={3:[0.0, 3.0], 
+                                              },
+				                       NMX=200000,NPR=1000000, IAD=3,
+				                       STOP= ['BP2', 'LP2']
+					                   )
+                                       
+    print("\n***Branch " + str(solution["LAB"]) + "***")
+    bvp = bvp + run(solution)
+    bvp = bvp + run(solution,DS='-')
+
+bvp=rl(bvp)
+save(bvp,'2spec_stifflim_new')
+plot(bvp)
+cl()
