@@ -96,7 +96,7 @@ cB0 = cA0 / cr
 L_0 = (1.0 + np.sqrt(1.0 - 4.0 * PA - 4.0 * PB / cr)) / 2.0 + 0.0001
 G_0 = 0.0
 
-# Scalar variables
+# Define all Scalar variables
 L = Variable(name='L', value=L_0)  # cell length
 L_plus = Variable(name='L_plus', value=G_0 + L_0 / 2)  # position of right cell edge
 L_minus = Variable(name='L_minus', value=G_0 - L_0 / 2)  # position of left cell edge
@@ -130,7 +130,7 @@ sigma.constrain(-L * (L - 1.0), mesh.facesRight)
 cA.faceGrad.constrain(0.0, where=mesh.exteriorFaces)
 cB.faceGrad.constrain(0.0, where=mesh.exteriorFaces)
 
-# Define the nonlinear diffusion term
+# Define the nonlinear diffusion terms
 Qtilde = (L * c_inf - (cA + cB))**2
 DIFFUSION_TERM_CA_EQ = DiffusionTerm(coeff=1 / L * c_inf / Qtilde * 
                                      (L * c_inf - cB), var=cA)
@@ -179,7 +179,7 @@ sigmas.append(np.array(sigma.value))
 concsA.append(np.array((cA / L).value))
 concsB.append(np.array((cB / L).value))
 
-# Courant-Friedrichs-Lewy (CFL) condition to determine timestep dt
+# Courant-Friedrichs-Lewy (CFL) condition to determine initial timestep dt
 MAX_VEL_HAT = np.max([np.max(np.abs(u_dot.value * L.value)), 0])
 diffA = max(1 / L.value * c_inf / Qtilde * (L.value * c_inf - cB.faceValue))
 diffB = max(kr / L.value * c_inf / Qtilde * (L.value * c_inf - cA.faceValue))
@@ -203,11 +203,13 @@ while total_t < TOTALTIME_SIM:
         Consider it is a implicit equation with sigma(n+1) on both sides --> sweeping
     3) repeat
     """
+
+    # update fields with result from previous iteration
     sigma.updateOld()
     cA.updateOld()
     cB.updateOld()
     
-    # Calculate new length L(n+1)
+    # Calculate new length L(n+1) and velocity G(n+1)
     if total_t == 0.0:
         L.setValue(L_old)
         L_plus.setValue(L_plus_old)
@@ -219,6 +221,7 @@ while total_t < TOTALTIME_SIM:
         L_plus.setValue(L_plus_old + L_plus_dot.value * dt)  # separate data for edges to plot phase relation
         L_minus.setValue(L_minus_old + L_minus_dot.value * dt)
 
+    # update respective fields
     L_old = L.value
     G_old = G.value
     L_plus_old = L_plus.value
@@ -309,7 +312,3 @@ if BOOL_SAVE_RESULTS: SAVEDATA(datatosave, namestosave, FILEPATH, HEADER)
 end_time = time.time()
 total_time = end_time - start_time
 print(total_time)
-
-plt.plot(Ts, Gdots)
-print(len(Ls))
-print(Ls[-200:])
